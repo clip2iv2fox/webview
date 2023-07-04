@@ -4,16 +4,18 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import db
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000",
+           "http://172.26.49.209:3000",
+           ]
 
 
 def init_app():
     db.init()
 
     app = FastAPI(
-        title="Lemoncode21 App",
-        description="CRUD sort pagination page",
-        version="1"
+        title="FTF WebView",
+        description="List and control devices",
+        version="1.0"
     )
 
     app.add_middleware(
@@ -32,9 +34,9 @@ def init_app():
     async def shutdown():
         await db.close()
 
-    from app.controller import person
+    from app.controller import test
 
-    app.include_router(person.router)
+    app.include_router(test.router)
 
     return app
 

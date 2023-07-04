@@ -4,7 +4,7 @@ from sqlalchemy import update, delete, or_, text, func, column
 from sqlalchemy.sql import select
 
 from app.config import db, commit_rollback
-from app.model import Person
+from app.model import Test
 from app.schema import PersonCreate, PageResponse
 
 
@@ -12,10 +12,10 @@ class PersonRepository:
 
     @staticmethod
     async def create(create_form: PersonCreate):
-        """ create person data """
-        db.add(Person(
-            name=create_form.name,
-            sex=create_form.sex,
+        """ create Test data """
+        db.add(Test(
+            id_device=create_form.id_device,
+            id_zone=create_form.id_zone,
             birth_date=create_form.birth_date,
             birth_place=create_form.birth_place,
             country=create_form.country
@@ -24,16 +24,16 @@ class PersonRepository:
 
     @staticmethod
     async def get_by_id(person_id: int):
-        """ retrieve person data by id """
-        query = select(Person).where(Person.id == person_id)
+        """ retrieve Test data by id """
+        query = select(Test).where(Test.id == person_id)
         return (await db.execute(query)).scalar_one_or_none()
 
     @staticmethod
     async def update(person_id: int, update_form: PersonCreate):
-        """ update person data """
+        """ update Test data """
 
-        query = update(Person) \
-            .where(Person.id == person_id) \
+        query = update(Test) \
+            .where(Test.id == person_id) \
             .values(**update_form.dict()) \
             .execution_options(synchronize_session="fetch")
 
@@ -44,7 +44,7 @@ class PersonRepository:
     async def delete(person_id: int):
         """ delete person data by id """
 
-        query = delete(Person).where(Person.id == person_id)
+        query = delete(Test).where(Test.id == person_id)
         await db.execute(query)
         await commit_rollback()
 
@@ -56,13 +56,13 @@ class PersonRepository:
             sort: str = None,
             filter: str = None
     ):
-        query = select(from_obj=Person, columns="*")
+        query = select(from_obj=Test, columns="*")
 
         # select columns dynamically
         if columns is not None and columns != "all":
-            # we need column format data like this --> [column(id),column(name),column(sex)...]
+            # we need column format data like this --> [column(id),column(id_device),column(id_zone)...]
 
-            query = select(from_obj=Person, columns=convert_columns(columns))
+            query = select(from_obj=Test, columns=convert_columns(columns))
 
         # select filter dynamically
         if filter is not None and filter != "null":
@@ -76,7 +76,7 @@ class PersonRepository:
             # check every key in dict. are there any table attributes that are the same as the dict key ?
 
             for attr, value in criteria.items():
-                _attr = getattr(Person, attr)
+                _attr = getattr(Test, attr)
 
                 # filter format
                 search = "%{}%".format(value)

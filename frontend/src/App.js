@@ -20,8 +20,8 @@ export default function App() {
   // table head
   const [tableHead, setTableHead] = useState([
     "no",
-    "name",
-    "sex",
+    "id_device",
+    "id_zone",
     "birth date",
     "birth place",
     "country",

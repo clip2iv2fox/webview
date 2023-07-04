@@ -5,17 +5,17 @@ from sqlalchemy import Enum, Column, DateTime
 from sqlmodel import SQLModel, Field
 
 
-class Sex(str, Enum):
-    MALE = "MALE"
-    FEMALE = "FEMALE"
+# class Sex(str, Enum):
+#     MALE = "MALE"
+#     FEMALE = "FEMALE"
 
 
-class Person(SQLModel, table=True):
-    __tablename__ = "person"
+class Test(SQLModel, table=True):
+    __tablename__ = "test"
 
     id: Optional[int] = Field(None, primary_key=True, nullable=False)
-    name: str
-    sex: Sex
+    id_device: str
+    id_zone: str
     birth_date: date
     birth_place: str
     country: str

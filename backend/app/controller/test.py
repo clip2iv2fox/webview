@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Path, Query
 
-from app.repository.person import PersonRepository
+from app.repository.test import PersonRepository
 from app.schema import ResponseSchema, PersonCreate
 
 router = APIRouter(

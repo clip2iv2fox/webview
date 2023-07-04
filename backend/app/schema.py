@@ -5,14 +5,14 @@ from fastapi import HTTPException
 from pydantic import BaseModel, validator
 from pydantic.generics import GenericModel
 
-from app.model.person import Sex
+# from app.model.test import Sex
 
 T = TypeVar('T')
 
 
 class PersonCreate(BaseModel):
-    name: str
-    sex: Sex
+    id_device: str
+    id_zone: str
     birth_date: date
     birth_place: str
     country: str
