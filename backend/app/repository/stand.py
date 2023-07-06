@@ -8,32 +8,30 @@ from app.model import Test, Stand
 from app.schema import TestCreate, StandCreate, PageResponse
 
 
-class TestRepository:
+class StandRepository:
 
     @staticmethod
-    async def create(create_form: TestCreate):
-        """ create Test data """
-        db.add(Test(
-            id_device=create_form.id_device,
-            id_zone=create_form.id_zone,
-            id_user=create_form.id_user,
-            id_stage=create_form.id_stage,
-            ip=create_form.ip
+    async def create(create_form: StandCreate):
+        """ create Stand data """
+        db.add(Stand(
+            stand_name=create_form.stand_name,
+            stand_x=create_form.stand_x,
+            stand_y=create_form.stand_y,
         ))
         await commit_rollback()
 
     @staticmethod
-    async def get_by_id(test_id: int):
-        """ retrieve Test data by id """
-        query = select(Test).where(Test.id == test_id)
+    async def get_by_id(stand_id: int):
+        """ retrieve Stand data by id """
+        query = select(Stand).where(Stand.id == stand_id)
         return (await db.execute(query)).scalar_one_or_none()
 
     @staticmethod
-    async def update(test_id: int, update_form: TestCreate):
-        """ update Test data by id"""
+    async def update(stand_id: int, update_form: StandCreate):
+        """ update Stand data by id"""
 
-        query = update(Test) \
-            .where(Test.id == test_id) \
+        query = update(Stand) \
+            .where(Stand.id == stand_id) \
             .values(**update_form.dict()) \
             .execution_options(synchronize_session="fetch")
 
@@ -41,10 +39,10 @@ class TestRepository:
         await commit_rollback()
 
     @staticmethod
-    async def delete(test_id: int):
-        """ delete Test data by id """
+    async def delete(stand_id: int):
+        """ delete Stand data by id """
 
-        query = delete(Test).where(Test.id == test_id)
+        query = delete(Stand).where(Stand.id == stand_id)
         await db.execute(query)
         await commit_rollback()
 
@@ -56,13 +54,13 @@ class TestRepository:
             sort: str = None,
             filter: str = None
     ):
-        query = select(from_obj=Test, columns="*")
+        query = select(from_obj=Stand, columns="*")
 
         # select columns dynamically
         if columns is not None and columns != "all":
             # we need column format data like this --> [column(id),column(id_device),column(id_zone)...]
 
-            query = select(from_obj=Test, columns=convert_columns(columns))
+            query = select(from_obj=Stand, columns=convert_columns(columns))
 
         # select filter dynamically
         if filter is not None and filter != "null":
@@ -76,7 +74,7 @@ class TestRepository:
             # check every key in dict. are there any table attributes that are the same as the dict key ?
 
             for attr, value in criteria.items():
-                _attr = getattr(Test, attr)
+                _attr = getattr(Stand, attr)
 
                 # filter format
                 search = "%{}%".format(value)
