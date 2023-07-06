@@ -22,9 +22,9 @@ export default function App() {
     "no",
     "id_device",
     "id_zone",
-    "birth date",
-    "birth place",
-    "country",
+    "id_user",
+    "id_stage",
+    "ip",
   ]);
 
   // selected column
@@ -39,25 +39,25 @@ export default function App() {
 
   // select column
   const [selectColumn, setSelectColumn] = useState({
-    name: true,
-    sex: true,
-    birth_date: true,
-    birth_place: true,
-    country: true,
+    id_device: true,
+    id_zone: true,
+    id_user: true,
+    id_stage: true,
+    ip: true,
   });
 
   // sort column
   const [sortColumn, setSortColumn] = useState({
-    name: false,
-    sex: false,
-    birth_date: false,
-    birth_place: false,
-    country: false,
+    id_device: false,
+    id_zone: false,
+    id_user: false,
+    id_stage: false,
+    ip: false,
   });
 
   useEffect(() => {
     axios
-      .get("http://localhost:8888/person")
+      .get("http://localhost:8888/test")
       .then((response) => {
         // remove key id, modified_at, create_at
         response.data.result.content.forEach((element) => {
@@ -93,7 +93,7 @@ export default function App() {
 
   // onClick render pagination
   const renderPagination = async (page) => {
-    const url = `http://localhost:8888/person?page=${page}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
+    const url = `http://localhost:8888/test?page=${page}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -140,7 +140,7 @@ export default function App() {
 
   //  onChange pageOption
   const onChangePageLimit = async (pageLimit) => {
-    const url = `http://localhost:8888/person?page=${pageNumber}&limit=${pageLimit}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
+    const url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageLimit}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -195,7 +195,7 @@ export default function App() {
     return list;
   };
 
-  // chose selecetd column
+  // chose selected column
   const choseSelectedColumnHandler = async () => {
     // filter value is true in column
     const true_keys = Object.keys(selectColumn).filter(
@@ -204,7 +204,7 @@ export default function App() {
     let columns = true_keys.join("-");
 
     setSelectedColumn(columns);
-    let url = `http://localhost:8888/person?page=${pageNumber}&limit=${pageSize}&columns=${columns}&sort=${sortedColumn}&filter=${filteredColumn}`;
+    let url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageSize}&columns=${columns}&sort=${sortedColumn}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -267,7 +267,7 @@ export default function App() {
     let sorts = true_keys.join("-");
 
     setSortedColumn(sorts);
-    let url = `http://localhost:8888/person?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sorts}&filter=${filteredColumn}`;
+    let url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sorts}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -291,10 +291,10 @@ export default function App() {
 
   // search handler
   const onSearchHandler = async (data) => {
-    // we just filter 3 column name, birth place, country
-    const filter = `name*${data}-birth_place*${data}-country*${data}`
+    // we just filter 3 column id_device, id_zone, id_stage
+    const filter = `id_device*${data}-id_zone*${data}-id_stage*${data}`
     setFilteredColumn(filter)
-    let url = `http://localhost:8888/person?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filter}`;
+    let url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filter}`;
     await axios
       .get(url)
       .then((response) => {

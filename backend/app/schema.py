@@ -10,12 +10,12 @@ from pydantic.generics import GenericModel
 T = TypeVar('T')
 
 
-class PersonCreate(BaseModel):
+class TestCreate(BaseModel):
     id_device: str
     id_zone: str
-    birth_date: date
-    birth_place: str
-    country: str
+    id_user: str
+    id_stage: str
+    ip: str
 
     # sex validation
     # @validator("sex")
@@ -23,6 +23,12 @@ class PersonCreate(BaseModel):
     #     if hasattr(Sex, v) is False:
     #         raise HTTPException(status_code=400, detail="Invalid input sex")
     #     return v
+
+
+class StandCreate(BaseModel):
+    stand_name: str
+    stand_x: str
+    stand_y: str
 
 
 class ResponseSchema(BaseModel):

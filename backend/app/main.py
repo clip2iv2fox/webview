@@ -35,8 +35,10 @@ def init_app():
         await db.close()
 
     from app.controller import test
+    from app.controller import stand
 
     app.include_router(test.router)
+    app.include_router(stand.router)
 
     return app
 
