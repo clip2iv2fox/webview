@@ -5,6 +5,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+const srv_addr = "http://172.26.49.209:8888/test"
 
 export default function App() {
   // content
@@ -57,7 +58,7 @@ export default function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8888/test")
+      .get(srv_addr)
       .then((response) => {
         // remove key id, modified_at, create_at
         response.data.result.content.forEach((element) => {
@@ -93,7 +94,7 @@ export default function App() {
 
   // onClick render pagination
   const renderPagination = async (page) => {
-    const url = `http://localhost:8888/test?page=${page}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
+    const url = srv_addr + `?page=${page}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -140,7 +141,7 @@ export default function App() {
 
   //  onChange pageOption
   const onChangePageLimit = async (pageLimit) => {
-    const url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageLimit}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
+    const url = srv_addr + `?page=${pageNumber}&limit=${pageLimit}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -204,7 +205,7 @@ export default function App() {
     let columns = true_keys.join("-");
 
     setSelectedColumn(columns);
-    let url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageSize}&columns=${columns}&sort=${sortedColumn}&filter=${filteredColumn}`;
+    let url = srv_addr + `?page=${pageNumber}&limit=${pageSize}&columns=${columns}&sort=${sortedColumn}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -267,7 +268,7 @@ export default function App() {
     let sorts = true_keys.join("-");
 
     setSortedColumn(sorts);
-    let url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sorts}&filter=${filteredColumn}`;
+    let url = srv_addr + `?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sorts}&filter=${filteredColumn}`;
     await axios
       .get(url)
       .then((response) => {
@@ -294,7 +295,7 @@ export default function App() {
     // we just filter 3 column id_device, id_zone, id_stage
     const filter = `id_device*${data}-id_zone*${data}-id_stage*${data}`
     setFilteredColumn(filter)
-    let url = `http://localhost:8888/test?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filter}`;
+    let url = srv_addr + `?page=${pageNumber}&limit=${pageSize}&columns=${selectedColumn}&sort=${sortedColumn}&filter=${filter}`;
     await axios
       .get(url)
       .then((response) => {

@@ -4,10 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import db
 
-origins = ["http://localhost:3000",
-           "http://172.26.49.209:3000",
-           ]
+# origins = ["http://localhost:3000",
+#            "http://localhost:8888",
+#            "http://172.26.49.209:3000",
+#            "http://172.26.49.209:8888"
+#            ]
 
+origins = ["http://172.26.49.209:3000"]
 
 def init_app():
     db.init()

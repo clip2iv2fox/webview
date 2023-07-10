@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Path, Query
 
 from app.repository.stand import StandRepository
-from app.schema import ResponseSchema, TestCreate, StandCreate
+from app.schema import ResponseSchema, StandCreate
 
 router = APIRouter(
     prefix="/stand",
@@ -10,7 +10,7 @@ router = APIRouter(
 
 
 @router.post("", response_model=ResponseSchema, response_model_exclude_none=True)
-async def create_test(
+async def create_stand(
         create_form: StandCreate
 ):
     await StandRepository.create(create_form)
@@ -18,7 +18,7 @@ async def create_test(
 
 
 @router.patch("/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
-async def update_test(
+async def update_stand(
         stand_id: int = Path(..., alias="id"),
         *,
         update_form: StandCreate
@@ -28,7 +28,7 @@ async def update_test(
 
 
 @router.delete("/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
-async def delete_person(
+async def delete_stand(
         stand_id: int = Path(..., alias="id"),
 ):
     await StandRepository.delete(stand_id)
@@ -36,7 +36,7 @@ async def delete_person(
 
 
 @router.get("/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
-async def get_person_by_id(
+async def get_stand_by_id(
         stand_id: int = Path(..., alias="id")
 ):
     result = await StandRepository.get_by_id(stand_id)
@@ -44,7 +44,7 @@ async def get_person_by_id(
 
 
 @router.get("", response_model=ResponseSchema, response_model_exclude_none=True)
-async def get_all_person(
+async def get_all_stand(
         page: int = 1,
         limit: int = 10,
         columns: str = Query(None, alias="columns"),

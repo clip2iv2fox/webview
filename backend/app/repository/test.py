@@ -4,8 +4,8 @@ from sqlalchemy import update, delete, or_, text, func, column
 from sqlalchemy.sql import select
 
 from app.config import db, commit_rollback
-from app.model import Test, Stand
-from app.schema import TestCreate, StandCreate, PageResponse
+from app.model import Test
+from app.schema import TestCreate, PageResponse
 
 
 class TestRepository:
