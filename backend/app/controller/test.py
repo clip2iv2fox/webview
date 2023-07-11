@@ -45,11 +45,12 @@ async def get_test_by_id(
 
 @router.get("", response_model=ResponseSchema, response_model_exclude_none=True)
 async def get_all_test(
+        id_zone: str = "*",
         page: int = 1,
         limit: int = 10,
         columns: str = Query(None, alias="columns"),
         sort: str = Query(None, alias="sort"),
-        filter: str = Query(None, alias="filter"),
+        filter: str = Query(None, alias="filter")
 ):
-    result = await TestRepository.get_all(page, limit, columns, sort, filter)
+    result = await TestRepository.get_all(id_zone, page, limit, columns, sort, filter)
     return ResponseSchema(detail="Successfully fetch data by id !", result=result)

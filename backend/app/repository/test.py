@@ -50,13 +50,17 @@ class TestRepository:
 
     @staticmethod
     async def get_all(
+            id_zone: str = "*",
             page: int = 1,
             limit: int = 10,
             columns: str = None,
             sort: str = None,
             filter: str = None
     ):
-        query = select(from_obj=Test, columns="*")
+        if id_zone == "*":
+            query = select(from_obj=Test, columns="*")
+        else:
+            query = select(from_obj=Test, columns="*").where(Test.id_zone == id_zone)
 
         # select columns dynamically
         if columns is not None and columns != "all":
