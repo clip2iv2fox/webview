@@ -2,9 +2,10 @@ import math
 
 from sqlalchemy import update, delete, or_, text, func, column
 from sqlalchemy.sql import select
+from datetime import datetime
 
 from app.config import db, commit_rollback
-from app.model import Test
+from app.model import Test, Props
 from app.schema import TestCreate, PageResponse
 
 
@@ -21,6 +22,7 @@ class TestRepository:
             ip=create_form.ip
         ))
         await commit_rollback()
+        await upd_time_db()
 
     @staticmethod
     async def get_by_id(test_id: int):
@@ -39,6 +41,7 @@ class TestRepository:
 
         await db.execute(query)
         await commit_rollback()
+        await upd_time_db()
 
     @staticmethod
     async def delete(test_id: int):
@@ -47,6 +50,7 @@ class TestRepository:
         query = delete(Test).where(Test.id == test_id)
         await db.execute(query)
         await commit_rollback()
+        await upd_time_db()
 
     @staticmethod
     async def get_all(
@@ -118,6 +122,16 @@ class TestRepository:
             total_record=total_record,
             content=result
         )
+
+async def upd_time_db():
+    """ update DB change time"""
+    query = update(Props) \
+        .where(Props.prop == "upd_time") \
+        .values(**{'prop': 'upd_time', 'val': str(datetime.now())}) \
+        .execution_options(synchronize_session="fetch")
+
+    await db.execute(query)
+    await commit_rollback()
 
 
 def convert_sort(sort):

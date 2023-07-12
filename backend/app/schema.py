@@ -31,6 +31,11 @@ class StandCreate(BaseModel):
     stand_y: str
 
 
+class PropsCreate(BaseModel):
+    prop: str
+    val: str
+
+
 class ResponseSchema(BaseModel):
     detail: str
     result: Optional[T] = None

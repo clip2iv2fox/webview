@@ -39,3 +39,16 @@ class Stand(SQLModel, table=True):
         sa_column=Column(DateTime, default=datetime.now,
                          onupdate=datetime.now, nullable=False)
     )
+
+class Props(SQLModel, table=True):
+    __tablename__ = "props"
+
+
+    id: Optional[int] = Field(None, primary_key=True, nullable=False)
+    prop: str
+    val: str
+    create_at: datetime = Field(default_factory=datetime.now)
+    modified_at: datetime = Field(
+        sa_column=Column(DateTime, default=datetime.now,
+                         onupdate=datetime.now, nullable=False)
+    )

@@ -2,53 +2,48 @@ import math
 
 from sqlalchemy import update, delete, or_, text, func, column
 from sqlalchemy.sql import select
-from datetime import datetime
 
 from app.config import db, commit_rollback
-from app.model import Stand, Props
-from app.schema import StandCreate, PropsCreate, PageResponse
+from app.model import Props
+from app.schema import PropsCreate, PageResponse
 
 
-class StandRepository:
+class PropsRepository:
 
     @staticmethod
-    async def create(create_form: StandCreate):
-        """ create Stand data """
-        db.add(Stand(
-            stand_name=create_form.stand_name,
-            stand_x=create_form.stand_x,
-            stand_y=create_form.stand_y,
+    async def create(create_form: PropsCreate):
+        """ create Test data """
+        db.add(Props(
+            prop=create_form.prop,
+            val=create_form.val
         ))
         await commit_rollback()
-        await upd_time_db()
 
     @staticmethod
-    async def get_by_id(stand_id: int):
-        """ retrieve Stand data by id """
-        query = select(Stand).where(Stand.id == stand_id)
+    async def get_by_id(test_id: int):
+        """ retrieve Test data by id """
+        query = select(Props).where(Props.prop == test_id)
         return (await db.execute(query)).scalar_one_or_none()
 
     @staticmethod
-    async def update(stand_id: int, update_form: StandCreate):
-        """ update Stand data by id"""
+    async def update(test_id: int, update_form: PropsCreate):
+        """ update Test data by id"""
 
-        query = update(Stand) \
-            .where(Stand.id == stand_id) \
+        query = update(Props) \
+            .where(Props.prop == test_id) \
             .values(**update_form.dict()) \
             .execution_options(synchronize_session="fetch")
 
         await db.execute(query)
         await commit_rollback()
-        await upd_time_db()
 
     @staticmethod
-    async def delete(stand_id: int):
-        """ delete Stand data by id """
+    async def delete(test_id: int):
+        """ delete Test data by id """
 
-        query = delete(Stand).where(Stand.id == stand_id)
+        query = delete(Props).where(Props.prop == test_id)
         await db.execute(query)
         await commit_rollback()
-        await upd_time_db()
 
     @staticmethod
     async def get_all(
@@ -58,13 +53,12 @@ class StandRepository:
             sort: str = None,
             filter: str = None
     ):
-        query = select(from_obj=Stand, columns="*")
-
+        query = select(from_obj=Props, columns="*")
         # select columns dynamically
         if columns is not None and columns != "all":
             # we need column format data like this --> [column(id),column(id_device),column(id_zone)...]
 
-            query = select(from_obj=Stand, columns=convert_columns(columns))
+            query = select(from_obj=Props, columns=convert_columns(columns))
 
         # select filter dynamically
         if filter is not None and filter != "null":
@@ -78,7 +72,7 @@ class StandRepository:
             # check every key in dict. are there any table attributes that are the same as the dict key ?
 
             for attr, value in criteria.items():
-                _attr = getattr(Stand, attr)
+                _attr = getattr(Props, attr)
 
                 # filter format
                 search = "%{}%".format(value)
@@ -117,16 +111,6 @@ class StandRepository:
             content=result
         )
 
-
-async def upd_time_db():
-    """ update DB change time"""
-    query = update(Props) \
-        .where(Props.prop == "upd_time") \
-        .values(**{'prop': 'upd_time', 'val': str(datetime.now())}) \
-        .execution_options(synchronize_session="fetch")
-
-    await db.execute(query)
-    await commit_rollback()
 
 def convert_sort(sort):
     """

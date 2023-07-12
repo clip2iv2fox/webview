@@ -10,7 +10,9 @@ from app.config import db
 #            "http://172.26.49.209:8888"
 #            ]
 
-origins = ["http://172.26.49.209:3000"]
+origins = ["http://172.26.49.209:3000",
+           "http://172.26.48.134:3000"
+           ]
 
 def init_app():
     db.init()
@@ -40,10 +42,12 @@ def init_app():
     from app.controller import test
     from app.controller import tests
     from app.controller import stand
+    from app.controller import props
 
     app.include_router(test.router)
     app.include_router(tests.router)
     app.include_router(stand.router)
+    app.include_router(props.router)
 
     return app
 
