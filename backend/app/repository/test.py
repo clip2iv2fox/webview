@@ -16,7 +16,10 @@ class TestRepository:
         """ create Test data """
         db.add(Test(
             id_device=create_form.id_device,
+            status=create_form.status,
             id_zone=create_form.id_zone,
+            x_coord=create_form.x_coord,
+            y_coord=create_form.y_coord,
             id_user=create_form.id_user,
             id_stage=create_form.id_stage,
             ip=create_form.ip
@@ -125,6 +128,16 @@ class TestRepository:
 
 async def upd_time_db():
     """ update DB change time"""
+    query = select(Props).where(Props.prop == "upd_time")
+    if (await db.execute(query)).scalar_one_or_none() is None:
+        db.add(Props(
+            prop="upd_time",
+            val=str(datetime.now())
+        ))
+        await commit_rollback()
+        await upd_time_db()
+
+
     query = update(Props) \
         .where(Props.prop == "upd_time") \
         .values(**{'prop': 'upd_time', 'val': str(datetime.now())}) \

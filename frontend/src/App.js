@@ -22,7 +22,10 @@ export default function App() {
   const [tableHead, setTableHead] = useState([
     "no",
     "id_device",
+    "status",
     "id_zone",
+    "x_coord",
+    "y_coord",
     "id_user",
     "id_stage",
     "ip",
@@ -41,7 +44,10 @@ export default function App() {
   // select column
   const [selectColumn, setSelectColumn] = useState({
     id_device: true,
+    status: true,
     id_zone: true,
+    x_coord: true,
+    y_coord: true,
     id_user: true,
     id_stage: true,
     ip: true,
@@ -50,7 +56,10 @@ export default function App() {
   // sort column
   const [sortColumn, setSortColumn] = useState({
     id_device: false,
-    id_zone: false,
+    status: true,
+    id_zone: true,
+    x_coord: true,
+    y_coord: true,
     id_user: false,
     id_stage: false,
     ip: false,

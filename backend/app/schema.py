@@ -12,7 +12,10 @@ T = TypeVar('T')
 
 class TestCreate(BaseModel):
     id_device: str
+    status: str
     id_zone: str
+    x_coord: str
+    y_coord: str
     id_user: str
     id_stage: str
     ip: str

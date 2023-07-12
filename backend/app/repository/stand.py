@@ -120,6 +120,16 @@ class StandRepository:
 
 async def upd_time_db():
     """ update DB change time"""
+    query = select(Props).where(Props.prop == "upd_time")
+    if (await db.execute(query)).scalar_one_or_none() is None:
+        db.add(Props(
+            prop="upd_time",
+            val=str(datetime.now())
+        ))
+        await commit_rollback()
+        await upd_time_db()
+
+
     query = update(Props) \
         .where(Props.prop == "upd_time") \
         .values(**{'prop': 'upd_time', 'val': str(datetime.now())}) \

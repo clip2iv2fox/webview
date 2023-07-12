@@ -15,7 +15,10 @@ class Test(SQLModel, table=True):
 
     id: Optional[int] = Field(None, primary_key=True, nullable=False)
     id_device: str
+    status: str
     id_zone: str
+    x_coord: str
+    y_coord: str
     id_user: str
     id_stage: str
     ip: str
