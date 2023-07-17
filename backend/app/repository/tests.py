@@ -132,7 +132,6 @@ async def upd_time_db():
             val=str(datetime.now())
         ))
         await commit_rollback()
-        await upd_time_db()
 
 
     query = update(Props) \
