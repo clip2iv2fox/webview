@@ -30,7 +30,7 @@ class TestsRepository:
     @staticmethod
     async def get_by_id(test_id: int):
         """ retrieve Test data by id """
-        query = select(Test).where(Test.id_device == test_id)
+        query = select(Test).where(Test.ip == test_id)
         return (await db.execute(query)).scalar_one_or_none()
 
     @staticmethod
@@ -38,7 +38,7 @@ class TestsRepository:
         """ update Test data by id"""
 
         query = update(Test) \
-            .where(Test.id_device == test_id) \
+            .where(Test.ip == test_id) \
             .values(**update_form.dict()) \
             .execution_options(synchronize_session="fetch")
 
@@ -50,7 +50,7 @@ class TestsRepository:
     async def delete(test_id: int):
         """ delete Test data by id """
 
-        query = delete(Test).where(Test.id_device == test_id)
+        query = delete(Test).where(Test.ip == test_id)
         await db.execute(query)
         await commit_rollback()
         await upd_time_db()

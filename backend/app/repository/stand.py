@@ -5,7 +5,7 @@ from sqlalchemy.sql import select
 from datetime import datetime
 
 from app.config import db, commit_rollback
-from app.model import Stand, Props
+from app.model import Stand, Test, Props
 from app.schema import StandCreate, PropsCreate, PageResponse
 
 
@@ -19,6 +19,19 @@ class StandRepository:
             stand_x=create_form.stand_x,
             stand_y=create_form.stand_y,
         ))
+        for i in range(1, int(create_form.stand_y) + 1):
+            for j in range(1, int(create_form.stand_x) + 1):
+                db.add(Test(
+                    id_device="",
+                    status="",
+                    id_zone=create_form.stand_name,
+                    x_coord=j,
+                    y_coord=i,
+                    id_user="",
+                    id_stage="",
+                    ip="Enter IP here"
+                ))
+                await commit_rollback()
         await commit_rollback()
         await upd_time_db()
 
@@ -44,11 +57,22 @@ class StandRepository:
     @staticmethod
     async def delete(stand_id: int):
         """ delete Stand data by id """
+        # select stand name
+        query = select(Stand).where(Stand.id == stand_id)
+        stand_name = (await db.execute(query)).scalar_one_or_none().stand_name
 
+        # delete tests with this name
+        query = delete(Test).where(Test.id_zone == stand_name)
+        await db.execute(query)
+        await commit_rollback()
+
+        # delete stand
         query = delete(Stand).where(Stand.id == stand_id)
         await db.execute(query)
         await commit_rollback()
+
         await upd_time_db()
+
 
     @staticmethod
     async def get_all(
