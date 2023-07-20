@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Path, Query
 
 from app.repository.tests import TestsRepository
-from app.schema import ResponseSchema, TestCreate
+from app.schema import ResponseSchema, TestCreate, TestCreateFirst, TestCreatePartial
 
 router = APIRouter(
     prefix="/tests",
@@ -22,6 +22,24 @@ async def update_test(
         test_id: str = Path(..., alias="id"),
         *,
         update_form: TestCreate
+):
+    await TestsRepository.update(test_id, update_form)
+    return ResponseSchema(detail="Successfully updated data !")
+
+@router.patch("/first/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
+async def update_test2(
+        test_id: str = Path(..., alias="id"),
+        *,
+        update_form: TestCreateFirst
+):
+    await TestsRepository.update(test_id, update_form)
+    return ResponseSchema(detail="Successfully updated data !")
+
+@router.patch("/partial/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
+async def update_test3(
+        test_id: str = Path(..., alias="id"),
+        *,
+        update_form: TestCreatePartial
 ):
     await TestsRepository.update(test_id, update_form)
     return ResponseSchema(detail="Successfully updated data !")

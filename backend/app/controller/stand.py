@@ -19,7 +19,7 @@ async def create_stand(
 
 @router.patch("/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
 async def update_stand(
-        stand_id: int = Path(..., alias="id"),
+        stand_id: str = Path(..., alias="id"),
         *,
         update_form: StandCreate
 ):
@@ -29,7 +29,7 @@ async def update_stand(
 
 @router.delete("/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
 async def delete_stand(
-        stand_id: int = Path(..., alias="id"),
+        stand_id: str = Path(..., alias="id"),
 ):
     await StandRepository.delete(stand_id)
     return ResponseSchema(detail="Successfully deleted data !")
@@ -37,7 +37,7 @@ async def delete_stand(
 
 @router.get("/{id}", response_model=ResponseSchema, response_model_exclude_none=True)
 async def get_stand_by_id(
-        stand_id: int = Path(..., alias="id")
+        stand_id: str = Path(..., alias="id")
 ):
     result = await StandRepository.get_by_id(stand_id)
     return ResponseSchema(detail="Successfully fetch data by id !", result=result)

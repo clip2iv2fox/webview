@@ -23,7 +23,7 @@ class StandRepository:
             for j in range(1, int(create_form.stand_x) + 1):
                 db.add(Test(
                     id_device="",
-                    status="",
+                    status="EMPTY",
                     id_zone=create_form.stand_name,
                     x_coord=j,
                     y_coord=i,
@@ -33,12 +33,11 @@ class StandRepository:
                 ))
                 await commit_rollback()
         await commit_rollback()
-        await upd_time_db()
 
     @staticmethod
     async def get_by_id(stand_id: int):
         """ retrieve Stand data by id """
-        query = select(Stand).where(Stand.id == stand_id)
+        query = select(Stand).where(Stand.stand_name == stand_id)
         return (await db.execute(query)).scalar_one_or_none()
 
     @staticmethod
@@ -46,20 +45,20 @@ class StandRepository:
         """ update Stand data by id"""
 
         query = update(Stand) \
-            .where(Stand.id == stand_id) \
+            .where(Stand.stand_name == stand_id) \
             .values(**update_form.dict()) \
             .execution_options(synchronize_session="fetch")
 
         await db.execute(query)
         await commit_rollback()
-        await upd_time_db()
 
     @staticmethod
     async def delete(stand_id: int):
         """ delete Stand data by id """
         # select stand name
-        query = select(Stand).where(Stand.id == stand_id)
-        stand_name = (await db.execute(query)).scalar_one_or_none().stand_name
+        # query = select(Stand).where(Stand.id == stand_id)
+        # stand_name = (await db.execute(query)).scalar_one_or_none().stand_name
+        stand_name = stand_id
 
         # delete tests with this name
         query = delete(Test).where(Test.id_zone == stand_name)
@@ -67,12 +66,9 @@ class StandRepository:
         await commit_rollback()
 
         # delete stand
-        query = delete(Stand).where(Stand.id == stand_id)
+        query = delete(Stand).where(Stand.stand_name == stand_id)
         await db.execute(query)
         await commit_rollback()
-
-        await upd_time_db()
-
 
     @staticmethod
     async def get_all(
@@ -141,25 +137,6 @@ class StandRepository:
             content=result
         )
 
-
-async def upd_time_db():
-    """ update DB change time"""
-    query = select(Props).where(Props.prop == "upd_time")
-    if (await db.execute(query)).scalar_one_or_none() is None:
-        db.add(Props(
-            prop="upd_time",
-            val=str(datetime.now())
-        ))
-        await commit_rollback()
-
-
-    query = update(Props) \
-        .where(Props.prop == "upd_time") \
-        .values(**{'prop': 'upd_time', 'val': str(datetime.now())}) \
-        .execution_options(synchronize_session="fetch")
-
-    await db.execute(query)
-    await commit_rollback()
 
 def convert_sort(sort):
     """

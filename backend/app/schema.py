@@ -11,14 +11,14 @@ T = TypeVar('T')
 
 
 class TestCreate(BaseModel):
-    id_device: str
-    status: str
-    id_zone: str
-    x_coord: str
-    y_coord: str
-    id_user: str
-    id_stage: str
-    ip: str
+    id_device: Optional[str] = None
+    status: Optional[str] = None
+    id_zone: Optional[str] = None
+    x_coord: Optional[str] = None
+    y_coord: Optional[str] = None
+    id_user: Optional[str] = None
+    id_stage: Optional[str] = None
+    ip: Optional[str] = None
 
     # sex validation
     # @validator("sex")
@@ -27,11 +27,22 @@ class TestCreate(BaseModel):
     #         raise HTTPException(status_code=400, detail="Invalid input sex")
     #     return v
 
+class TestCreateFirst(BaseModel):
+    id_device: Optional[str] = None
+    status: Optional[str] = None
+    id_user: Optional[str] = None
+    id_stage: Optional[str] = None
+
+
+class TestCreatePartial(BaseModel):
+    status: Optional[str] = None
+    id_stage: Optional[str] = None
+
 
 class StandCreate(BaseModel):
-    stand_name: str
-    stand_x: str
-    stand_y: str
+    stand_name: Optional[str] = None
+    stand_x: Optional[str] = None
+    stand_y: Optional[str] = None
 
 
 class PropsCreate(BaseModel):
