@@ -29,7 +29,8 @@ class StandRepository:
                     y_coord=i,
                     id_user="",
                     id_stage="",
-                    ip="Enter IP here"
+                    ip="Enter IP here",
+                    start_time=""
                 ))
                 await commit_rollback()
         await commit_rollback()
@@ -56,9 +57,9 @@ class StandRepository:
     async def delete(stand_id: int):
         """ delete Stand data by id """
         # select stand name
-        # query = select(Stand).where(Stand.id == stand_id)
-        # stand_name = (await db.execute(query)).scalar_one_or_none().stand_name
-        stand_name = stand_id
+        query = select(Stand).where(Stand.id == stand_id)
+        stand_name = (await db.execute(query)).scalar_one_or_none().stand_name
+        # stand_name = stand_id
 
         # delete tests with this name
         query = delete(Test).where(Test.id_zone == stand_name)
@@ -66,7 +67,7 @@ class StandRepository:
         await commit_rollback()
 
         # delete stand
-        query = delete(Stand).where(Stand.stand_name == stand_id)
+        query = delete(Stand).where(Stand.id == stand_id)
         await db.execute(query)
         await commit_rollback()
 

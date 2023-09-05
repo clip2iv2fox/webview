@@ -22,7 +22,8 @@ class TestRepository:
             y_coord=create_form.y_coord,
             id_user=create_form.id_user,
             id_stage=create_form.id_stage,
-            ip=create_form.ip
+            ip=create_form.ip,
+            start_time=create_form.start_time
         ))
         await commit_rollback()
 

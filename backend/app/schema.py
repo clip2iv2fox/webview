@@ -19,19 +19,14 @@ class TestCreate(BaseModel):
     id_user: Optional[str] = None
     id_stage: Optional[str] = None
     ip: Optional[str] = None
-
-    # sex validation
-    # @validator("sex")
-    # def sex_validation(cls, v):
-    #     if hasattr(Sex, v) is False:
-    #         raise HTTPException(status_code=400, detail="Invalid input sex")
-    #     return v
+    start_time: Optional[str] = None
 
 class TestCreateFirst(BaseModel):
     id_device: Optional[str] = None
     status: Optional[str] = None
     id_user: Optional[str] = None
     id_stage: Optional[str] = None
+    start_time: Optional[str] = None
 
 
 class TestCreatePartial(BaseModel):

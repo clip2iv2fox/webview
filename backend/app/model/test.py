@@ -4,12 +4,6 @@ from typing import Optional
 from sqlalchemy import Enum, Column, DateTime
 from sqlmodel import SQLModel, Field
 
-
-# class Sex(str, Enum):
-#     MALE = "MALE"
-#     FEMALE = "FEMALE"
-
-
 class Test(SQLModel, table=True):
     __tablename__ = "test"
 
@@ -22,6 +16,7 @@ class Test(SQLModel, table=True):
     id_user: str
     id_stage: str
     ip: str
+    start_time: str
 
     create_at: datetime = Field(default_factory=datetime.now)
     modified_at: datetime = Field(
