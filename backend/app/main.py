@@ -10,8 +10,10 @@ from app.config import db
 #            "http://172.26.49.209:8888"
 #            ]
 
-origins = ["http://172.26.49.209:3000",
-           "http://172.26.48.134:3000"
+origins = [
+                "http://192.168.56.1:3000",
+                "http://192.168.56.1:8000",
+                "http://192.168.56.1:8888"
            ]
 
 def init_app():
@@ -23,9 +25,10 @@ def init_app():
         version="1.0"
     )
 
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins,
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"]
@@ -57,4 +60,4 @@ app = init_app()
 
 def start():
     """ Launched with 'poetry run start' at root level  """
-    uvicorn.run("app.main:app", host="172.26.49.209", port=8888, reload=True)
+    uvicorn.run("app.main:app", host="192.168.56.1", port=8000, reload=True)

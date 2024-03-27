@@ -5,7 +5,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-const srv_addr = "http://172.26.49.209:8888/test"
+const srv_addr = "http://172.26.49.211:8888/test"
 
 export default function App() {
   // content
